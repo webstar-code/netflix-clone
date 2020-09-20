@@ -16,6 +16,7 @@ const firebaseConfig = {
 
 const firebase = Firebase.initializeApp(firebaseConfig);
 
-seedDatabase(firebase);
+// DO NOT UNCOMMENT -- use only once to write data in database
+// seedDatabase(firebase);
 
 export default firebase;

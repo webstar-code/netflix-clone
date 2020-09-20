@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link as ReactRouterLink } from 'react-router-dom';
 import { Container, Base, Title, Input, Text, TextSmall, Submit, Link, Error } from './FormStyles'
 
 function Form({ children, ...restProps }) {

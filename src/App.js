@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { useAuthListener } from './hooks/useAuthListener';
+import { useAuthListener } from './hooks';
 import Browse from './pages/Browse';
 import Home from './pages/Home';
 import Signin from './pages/Signin';
@@ -11,7 +11,6 @@ import { IsUserRedirect, ProtectedRoutes } from './routes';
 
 function App() {
   const { user } = useAuthListener();
-  console.log(user);
   return (
     <Router>
       {/* Signup-- Redirect to browse if user exists */}
