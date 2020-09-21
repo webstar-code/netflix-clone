@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import ProfilesContainer from './ProfilesContainer'
 import { FirebaseContext } from '../context/FirebaseContext';
-import { Card, Header, Loading } from '../components';
+import { Card, Header, Loading, Player } from '../components';
 import Logo from '../logo.svg';
 
 function BrowseContainer({ slides }) {
@@ -22,7 +22,6 @@ function BrowseContainer({ slides }) {
   useEffect(() => {
     setSlideRows(slides[category]);
   }, [slides, category]);
-  console.log(slidesRows);
   return (
     <>
       {profile.displayName ?
@@ -75,7 +74,7 @@ function BrowseContainer({ slides }) {
                 </Card.Title>
                 <Card.Entities>
                   {slideItem.data.map(item => (
-                    <Card.Item item={item}>
+                    <Card.Item item={item} key={item.title}>
                       <Card.Image src={`/images/${category}/${item.genre}/${item.slug}/small.jpg`} />
                       <Card.Meta>
                         <Card.SubTitle>{item.title}</Card.SubTitle>
@@ -84,8 +83,12 @@ function BrowseContainer({ slides }) {
                     </Card.Item>
                   ))}
                 </Card.Entities>
-                <Card.Feature category={category}/>
-
+                <Card.Feature category={category}>
+                  <Player>
+                    <Player.Button>Play Now</Player.Button>
+                    <Player.Video src="/videos/bunny.mp4" />
+                  </Player>
+                </Card.Feature>
               </Card>
             ))}
           </Card.Group>

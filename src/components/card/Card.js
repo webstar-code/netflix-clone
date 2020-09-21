@@ -50,7 +50,7 @@ Card.Image = function CardImage({ ...restProps }) {
   return <Image {...restProps}></Image>
 }
 
-Card.Feature = function CardFeature({ category, chidlren, ...restProps }) {
+Card.Feature = function CardFeature({ category, children, ...restProps }) {
   const {itemFeature, showFeature, setShowFeature } = useContext(FeatureContext);
   return showFeature ? (
     <Feature {...restProps}
@@ -70,6 +70,8 @@ Card.Feature = function CardFeature({ category, chidlren, ...restProps }) {
           {itemFeature.genre.charAt(0).toUpperCase() + itemFeature.genre.slice(1)}
         </FeatureText>
       </Group>
+      {children}
+
       </Content>
     </Feature>
   ): null
