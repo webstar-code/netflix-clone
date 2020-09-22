@@ -5,7 +5,7 @@ import Browse from './pages/Browse';
 import Home from './pages/Home';
 import Signin from './pages/Signin';
 import Signup from './pages/Signup';
-import { IsUserRedirect, ProtectedRoutes } from './routes';
+import { IsUserRedirect, ProtectedRoute } from './routes';
 
 
 
@@ -26,9 +26,9 @@ function App() {
         <Home />
       </IsUserRedirect>
       {/* Browse-- Protected Route if user not exists Redirect to Signin */}
-      <ProtectedRoutes user={user} path="/browse">
+      <ProtectedRoute user={user} path="/browse">
         <Browse />
-      </ProtectedRoutes>
+      </ProtectedRoute>
     </Router>
 
   )

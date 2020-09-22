@@ -1,16 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react'
+import Fuse from 'fuse.js';
 import ProfilesContainer from './ProfilesContainer'
 import { FirebaseContext } from '../context/FirebaseContext';
 import { Card, Header, Loading, Player } from '../components';
 import Logo from '../logo.svg';
+import FooterContainer from './FooterContainer';
 
 function BrowseContainer({ slides }) {
   const { firebase } = useContext(FirebaseContext);
   const [profile, setProfile] = useState({});
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState();
+  const [searchTerm, setSearchTerm] = useState('');
   const [category, setCategory] = useState('series');
-  const [slidesRows, setSlideRows] = useState();
+  const [slideRows, setSlideRows] = useState([]);
 
   const user = firebase.auth().currentUser || {};
   useEffect(() => {
@@ -22,6 +24,18 @@ function BrowseContainer({ slides }) {
   useEffect(() => {
     setSlideRows(slides[category]);
   }, [slides, category]);
+
+  useEffect(() => {
+    const fuse = new Fuse(slideRows, { keys: ['data.title', 'data.description', 'data.genre'] });
+    const results = fuse.search(searchTerm).map(({ item }) => item);
+
+    if (slideRows.length > 0 && searchTerm.length > 3 && results.length > 0) {
+      setSlideRows(results);
+    } else {
+      setSlideRows(slides[category]);
+    }
+  }, [searchTerm]);
+
   return (
     <>
       {profile.displayName ?
@@ -60,21 +74,23 @@ function BrowseContainer({ slides }) {
             <Header.Feature>
               <Header.FeatureCallOut>Watch Joker Now</Header.FeatureCallOut>
               <Header.Text>
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eaque facilis exercitationem numquam officia libero molestiae sint impedit, similique quaerat distinctio vero? A, placeat sapiente nam vitae sit ipsam ratione, incidunt esse, ullam nostrum soluta obcaecati tempora quia delectus natus quo voluptatibus. Soluta aliquid reprehenderit unde quia tenetur nobis!
+                Forever alone in a crowd, failed comedian Arthur Fleck seeks connection as he walks the streets of Gotham
+                City. Arthur wears two masks -- the one he paints for his day job as a clown, and the guise he projects in a
+                futile attempt to feel like he's part of the world around him.
               </Header.Text>
               <Header.PlayButton>Play</Header.PlayButton>
             </Header.Feature>
           </Header>
 
           <Card.Group>
-            {slidesRows.map(slideItem => (
-              <Card>
-                <Card.Title key={`${category}-${slideItem.title.toLowerCase()}`}>
+            {slideRows.map(slideItem => (
+              <Card key={`${category}-${slideItem.title.toLowerCase()}`}>
+                <Card.Title>
                   {slideItem.title}
                 </Card.Title>
                 <Card.Entities>
                   {slideItem.data.map(item => (
-                    <Card.Item item={item} key={item.title}>
+                    <Card.Item item={item} key={item.title.toLowerCase()}>
                       <Card.Image src={`/images/${category}/${item.genre}/${item.slug}/small.jpg`} />
                       <Card.Meta>
                         <Card.SubTitle>{item.title}</Card.SubTitle>
@@ -93,6 +109,7 @@ function BrowseContainer({ slides }) {
             ))}
           </Card.Group>
 
+          <FooterContainer />
         </>
         :
         <ProfilesContainer user={user} setProfile={setProfile} />

@@ -37,8 +37,10 @@ Header.PlayButton = function HeaderPlayButton({ children, ...restProps }) {
   return <PlayButton {...restProps}>{children}</PlayButton>
 }
 
-Header.TextLink = function HeaderTextLink({ children, ...restProps }) {
-  return <Link {...restProps}>{children}</Link>
+Header.TextLink = function HeaderTextLink({  children, ...restProps }) {
+  return <ReactRouterLink to={"/signin"}>
+    <Link {...restProps}>{children}</Link>
+  </ReactRouterLink>
 }
 
 Header.Group = function HeaderGroup({ children, ...restProps }) {
@@ -57,22 +59,22 @@ Header.Dropdown = function HeaderDropdown({ children, ...restProps }) {
 Header.Search = function HeaderSearch({ searchTerm, setSearchTerm, ...restProps }) {
   const [searchActive, setSearchActive] = useState(false);
   return (
-  <Search>
-    <SearchIcon
-      onClick={() => setSearchActive(searchActive => !searchActive)}
-      active={searchActive}>
-      <img src="/images/icons/search.png" alt="Search" />
-    </SearchIcon>
+    <Search>
+      <SearchIcon
+        onClick={() => setSearchActive(searchActive => !searchActive)}
+        active={searchActive}>
+        <img src="/images/icons/search.png" alt="Search" />
+      </SearchIcon>
 
-    <SearchInput
-      value={searchTerm}
-      onChange={({ target }) => setSearchTerm(target.value)}
-      type="text"
-      placeholder="Search movies and TV shows"
-      active={searchActive}
-      {...restProps}
-    />
-  </Search>
+      <SearchInput
+        value={searchTerm}
+        onChange={({ target }) => setSearchTerm(target.value)}
+        type="text"
+        placeholder="Search movies and TV shows"
+        active={searchActive}
+        {...restProps}
+      />
+    </Search>
   )
 }
 

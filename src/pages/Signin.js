@@ -13,7 +13,6 @@ function Signin() {
   const [error, seterror] = useState('');
 
   const IsInvalid = password === '' || emailAddress === '';
-
   const handleSignIn = (e) => {
     e.preventDefault();
 
